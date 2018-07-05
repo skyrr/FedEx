@@ -6,6 +6,7 @@ using System.Data;
 using System.IO;
 using System.Net.Http;
 using System.Net;
+using System.Text;
 
 namespace FedEx
 {
@@ -22,12 +23,37 @@ namespace FedEx
         static void Main(string[] args)
         {   
             trackingNumbers = FedExFileReader.ReadDataFile();
-
             RequestIteration(TrackingNumbersQuantity);
+            string resultHtml = ResultReader();
+            ParseResult(resultHtml);
+            ResultFileWriter();
 
             Console.ReadKey();
         }
-        
+
+        private static void ParseResult(string resultHtml)
+        {
+        }
+
+        private static void ResultFileWriter()
+        {
+        }
+
+        private static string ResultReader()
+        {
+            string path = "htmlResult.html";
+            using (FileStream fs = File.Open(path, FileMode.Open)) {
+                byte[] b = new byte[1024];
+                string s = "";
+                UTF8Encoding temp = new UTF8Encoding(true);
+
+                while (fs.Read(b, 0, b.Length) > 0) {
+                    s += temp.GetString(b);
+                }
+                return s;
+            }
+        }
+
         private static void RequestIteration(int TrackingNumbersQuantity)
         {
             int len = trackingNumbers.Count;
