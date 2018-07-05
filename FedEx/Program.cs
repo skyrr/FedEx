@@ -25,7 +25,6 @@ namespace FedEx
 
             RequestIteration(TrackingNumbersQuantity);
 
-            //Console.WriteLine(content); 
             Console.ReadKey();
         }
         
@@ -35,7 +34,6 @@ namespace FedEx
             int groupIndex = 0;
             int index = 0;
             string numbersList = "";
-            //Console.WriteLine(trackingNumbers[0].TrackingNumber);
             Console.WriteLine(len);
             while (groupIndex < len)
             {
@@ -51,17 +49,13 @@ namespace FedEx
                         numbersList += trackingNumbers[index].TrackingNumber + ",";
                     }
                     ++index;
-                    //Console.WriteLine(++n);
                 }
                 response = requestManager.SendGETRequest(BasicUrl + numbersList, null, null, false);
                 content += requestManager.GetResponseContent(response);
                 Console.WriteLine(BasicUrl + numbersList);
-                //Console.WriteLine(i);
-
                 Console.WriteLine(numbersList);
                 groupIndex += 5;
                 TrackingNumbersQuantity += 5;
-                //RequestIteration(TrackingNumbersQuantity);
                 Console.WriteLine(groupIndex);
             }
         }
