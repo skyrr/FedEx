@@ -29,8 +29,6 @@ namespace FedEx
             string resultHtml = ResultReader();
             ParseResult(resultHtml);
             ResultFileWriter(trackingStatus);
-            //var ts = trackingStatus[0];
-            Console.WriteLine("tracking status last - " + trackingStatus.Count);
             Console.ReadKey();
         }
 
@@ -58,6 +56,15 @@ namespace FedEx
 
         private static void ResultFileWriter(List<TrackingStatus> trackingStatus)
         {
+            using (System.IO.StreamWriter file =
+            new System.IO.StreamWriter(@"result.txt"))
+            {
+                foreach (TrackingStatus line in trackingStatus)
+                {
+                    // If the line doesn't contain the word 'Second', write the line to the file.
+                        file.WriteLine(line.TrackingNumber + " " + line.DeliveryStatus);
+                }
+            }
         }
 
         private static string ResultReader()
