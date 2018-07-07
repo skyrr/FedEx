@@ -139,11 +139,11 @@ namespace FedEx
                 response = (HttpWebResponse)request.GetResponse();
                 cookies.Add(response.Cookies);
                 // Print the properties of each cookie.
-                Console.WriteLine("\nCookies: ");
-                foreach (Cookie cook in cookies.GetCookies(request.RequestUri))
-                {
-                    Console.WriteLine("Domain: {0}, String: {1}", cook.Domain, cook.ToString());
-                }
+                //Console.WriteLine("\nCookies: ");
+                //foreach (Cookie cook in cookies.GetCookies(request.RequestUri))
+                //{
+                //    Console.WriteLine("Domain: {0}, String: {1}", cook.Domain, cook.ToString());
+                //}
             }
             catch (WebException ex)
             {

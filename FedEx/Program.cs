@@ -7,6 +7,7 @@ using System.IO;
 using System.Net.Http;
 using System.Net;
 using System.Text;
+using HtmlAgilityPack;
 
 namespace FedEx
 {
@@ -19,6 +20,7 @@ namespace FedEx
         public static string content;
         public static HttpWebResponse response;
         public static RequestManager requestManager = new RequestManager();
+        public static List<TrackingStatus> trackingStatus = new List<TrackingStatus>();
 
         static void Main(string[] args)
         {   
@@ -26,16 +28,35 @@ namespace FedEx
             RequestIteration(TrackingNumbersQuantity);
             string resultHtml = ResultReader();
             ParseResult(resultHtml);
-            ResultFileWriter();
-
+            ResultFileWriter(trackingStatus);
+            //var ts = trackingStatus[0];
+            Console.WriteLine("tracking status last - " + trackingStatus.Count);
             Console.ReadKey();
         }
 
         private static void ParseResult(string resultHtml)
         {
+            var htmlDoc = new HtmlDocument();
+            htmlDoc.LoadHtml(resultHtml);
+
+            var htmlNodesNumbers = htmlDoc.DocumentNode.SelectNodes("//tr/td/div/div/a");
+            var htmlNodesStatus = htmlDoc.DocumentNode.SelectNodes("//tr/td[2]/div/span[3]");
+            var numbersQuantity = htmlNodesNumbers.Count;
+            int startNumber = 0;
+            var trNumber = "";
+            var trStatus = "";
+            while (startNumber < numbersQuantity) {
+                trNumber = htmlNodesNumbers[startNumber].InnerHtml;
+                trStatus = htmlNodesStatus[startNumber].InnerHtml;
+                Console.Write(trNumber + " ");
+                Console.Write(trStatus);
+                Console.WriteLine();
+                trackingStatus.Add(new TrackingStatus() { TrackingNumber = trNumber, DeliveryStatus = trStatus });
+                startNumber++;
+            }
         }
 
-        private static void ResultFileWriter()
+        private static void ResultFileWriter(List<TrackingStatus> trackingStatus)
         {
         }
 
